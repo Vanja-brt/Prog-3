@@ -1,0 +1,210 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void insertion_sort (int a[], int n)
+{
+    for(int r=1;r<n;r++)
+    {
+        int t=a[r];
+        for(int i=r-1;i>=0;i--)
+        {
+            if(a[i]>t)
+            {
+                a[i+1]=a[i];
+                a[i]=t;
+            }
+            else if(a[i]<t)
+            {
+                a[i+1]=t;
+                break;
+            }
+        }
+    }
+}
+int main()
+{
+    const int n=100000;
+    int* a=new int[n];
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<> dis(0,999999);
+    for(int i=0;i<n;i++)
+    {
+        a[i]=dis(mt);
+    }
+    insertion_sort(a,n);
+        delete[] a;
+        return 0;
+}
+
+================================================================================================================================
+На компјутер со спецификации: Intel Core i7-10700K @3.80GHz, Ram Memory 32 GB, SSD 224 GB, HDD 1.8 TB, NVIDIA GeForce GTX 1650Ti
+Програмата се изврши за: 5.267 s, 5.172 s, 5.219 s, 5.234 s, 5.234 s
+================================================================================================================================
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void selection_sort (int a[], int n)
+{
+    for (int i=0;i<n-1;i++)
+    {
+        int m=a[i],t=a[i],x;
+        for(int j=i+1;j<n;j++)
+        {
+            if(a[j]<m)
+            {
+                m=a[j];
+                x=j;
+            }
+        }
+        if (m!=a[i])
+        {
+            a[i]=m;
+            a[x]=t;
+        }
+    }
+}
+int main()
+{
+    const int n=100000;
+    int* a=new int[n];
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<> dis(0,999999);
+    for(int i=0;i<n;i++)
+    {
+        a[i]=dis(mt);
+    }
+    selection_sort(a,n);
+        delete[] a;
+        return 0;
+}
+
+================================================================================================================================
+На компјутер со спецификации: Intel Core i7-10700K @3.80GHz, Ram Memory 32 GB, SSD 224 GB, HDD 1.8 TB, NVIDIA GeForce GTX 1650Ti
+Програмата се изврши за: 8.734 s, 8.765 s, 8.734 s, 8.750 s, 8.750 s
+================================================================================================================================
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void merge_(int a[],int l, int m, int r)
+{
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    int* L = new int[n1];
+    int* R = new int[n2];
+    for (int i = 0; i < n1; i++) {
+        L[i] = a[l + i];
+    }
+    for (int i = 0; i < n2; i++) {
+        R[i] = a[m + 1 + i];
+    }
+    int i = 0, j = 0, k = 1;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            a[k++] = L[i++];
+        }
+        else {
+            a[k++] = R[j++];
+        }
+    }
+    while (i < n1) {
+        a[k++] = L[i++];
+    }
+    while (j < n2) {
+        a[k++] = R[j++];
+    }
+    delete[] L;
+    delete[] R;
+}
+
+void merge_sort(int a[], int l, int r)
+{
+    if (l<r) {
+        int m = l+(r-1)/2;
+        merge_sort(a, l, m);
+        merge_(a,l,m,r);
+    }
+}
+int main()
+{
+    const int n=100000;
+    int* a=new int[n];
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<> dis(0,999999);
+    for(int i=0;i<n;i++)
+    {
+        a[i]=dis(mt);
+    }
+    merge_sort(a,0,n-1);
+        delete[] a;
+        return 0;
+}
+
+================================================================================================================================
+На компјутер со спецификации: Intel Core i7-10700K @3.80GHz, Ram Memory 32 GB, SSD 224 GB, HDD 1.8 TB, NVIDIA GeForce GTX 1650Ti
+Програмата се изврши за: 0.031 s, 0.047 s, 0.031 s, 0.062 s, 0.047 s
+================================================================================================================================
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void quick_sort (int a[], int n)
+{
+    int p=a[n-1],t,i=-1;
+    while (i<n)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(a[j]<p)
+            {
+                i++;
+                t=a[i];
+                a[i]=a[j];
+                a[j]=t;
+            }
+        }
+        i++;
+        t=a[i];
+        a[i]=p;
+        a[n-1]=t;
+        break;
+    }
+    int b[i],c[n-i-1];
+    int m=i,q=n-i-1;
+    for (int j=0;j<m;j++)
+        b[j]=a[j];
+    for (int j=0;j<q;j++)
+        c[j]=a[j+i+1];
+    if (m>1)
+        quick_sort(b,m);
+    if (q>1)
+        quick_sort(c,q);
+    for (int j=0;j<m;j++)
+        a[j]=b[j];
+    for (int j=0;j<q;j++)
+        a[j+i+1]=c[j];
+}
+int main()
+{
+    const int n=100000;
+    int* a=new int[n];
+    random_device rd;
+    mt19937 mt(rd());
+    uniform_int_distribution<> dis(0,999999);
+    for(int i=0;i<n;i++)
+    {
+        a[i]=dis(mt);
+    }
+    quick_sort(a,n);
+        delete[] a;
+        return 0;
+}
+
+================================================================================================================================
+На компјутер со спецификации: Intel Core i7-10700K @3.80GHz, Ram Memory 32 GB, SSD 224 GB, HDD 1.8 TB, NVIDIA GeForce GTX 1650Ti
+Програмата се изврши за: 0.063 s, 0.062 s, 0.063 s, 0.062 s, 0.063 s
+================================================================================================================================
