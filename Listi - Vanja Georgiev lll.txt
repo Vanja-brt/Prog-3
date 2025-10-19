@@ -1,0 +1,388 @@
+zadacha 1: vnesuvame brojki od tastatura i tie se sortiraat vo niza, po sekoe vnesuvanje na eden element
+========================================================================================================
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+};
+
+struct List {
+    Node* start;
+    List() {
+        start = new Node();   // dummy node
+        start->next = nullptr;
+    }
+};
+
+void Print (List l) {
+    Node* p=l.start;
+    while (p->next) {
+        cout<<p->next->val<<" ";
+        p=p->next;
+    }
+}
+
+void SortList(List l, int n) {
+    Node *p=l.start;
+    while (p->next) {
+        if (n<=p->next->val) {
+            Node *temp=p->next;
+            p->next=new Node();
+            p->next->val=n;
+            p->next->next=temp;
+            break;
+        }
+        else {
+            p=p->next;
+        }
+    }
+    if (!p->next) {
+        p->next=new Node();
+        p->next->val=n;
+    }
+}
+
+int main() {
+    int n;
+    List l;
+    Node* p=l.start;
+    p->next=new Node();
+    cin>>n;
+    p->next->val=n;
+    while (cin >> n) {
+        SortList(l,n);
+    }
+    Print (l);
+    return 0;
+}
+========================================================================================================
+zadacha 2: imame dve listi, da gi spoime i finalnata lista da e sortirana, bez duplikati
+    a) moze vnesenite listi da se vekje sortirani zasebno
+    b) moze vnesenite listi da ne se sortirani ushte pri vnesot
+========================================================================================================
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+};
+
+struct List {
+    Node* start;
+    List() {
+        start = new Node();
+        start->next = nullptr;
+    }
+};
+
+void Print (List l) {
+    Node* p=l.start;
+    while (p->next) {
+        cout<<p->next->val<<" ";
+        p=p->next;
+    }
+}
+
+void BubbleSort(List l) {
+    Node *p=l.start;
+    Node *q=p->next;
+    int c=0;
+    while (q->next) {
+        if (p->next->val>q->next->val) {
+            int temp=p->next->val;
+            p->next->val=q->next->val;
+            q->next->val=temp;
+            c=1;
+        }
+        p=p->next;
+        q=q->next;
+    }
+    if (c==1) {
+        BubbleSort(l);
+    }
+}
+
+void remove (List l, int n) {
+    Node* p=l.start;
+    while (p->next) {
+        if (p->next->val==n) {
+            break;
+        }
+        p=p->next;
+    }
+    Node *q=p;
+    p=p->next;
+    Node *temp=p->next;
+    delete p;
+    q->next=temp;
+}
+
+void MergeLists(List l1, List l2) {
+    Node *p=l1.start;
+    Node *q=l2.start;
+    while (p->next) {
+        p=p->next;
+    }
+    p->next=q->next;
+    BubbleSort(l1);
+    p=l1.start;
+    while (p->next->next) {
+        if (p->next->val>=p->next->next->val) {
+            remove(l1,p->next->val);
+        }
+        else
+            p=p->next;
+    }
+}
+
+int main() {
+    List l1,l2;
+    Node* p=l1.start, *q=l2.start;
+    int n;
+    while (cin>>n) {
+        p->next=new Node();
+        p->next->val=n;
+        p=p->next;
+    }
+    cin.clear();
+    cin.ignore(1000, '\n');
+    while (cin>>n) {
+        q->next=new Node();
+        q->next->val=n;
+        q=q->next;
+    }
+    MergeLists(l1,l2);
+    Print(l1);
+}
+========================================================================================================
+zadacha 3: da napravime bubble sort i insertion sort za listata shto kje ja vneseme
+    1) BubbleSort
+========================================================================================================
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+};
+
+struct List {
+    Node* start;
+    List() {
+        start = new Node();
+        start->next = nullptr;
+    }
+};
+
+void Print (List l) {
+    Node* p=l.start;
+    while (p->next) {
+        cout<<p->next->val<<" ";
+        p=p->next;
+    }
+}
+
+void BubbleSort(List l) {
+    Node *p=l.start;
+    Node *q=p->next;
+    int c=0;
+    while (q->next) {
+        if (p->next->val>q->next->val) {
+            int temp=p->next->val;
+            p->next->val=q->next->val;
+            q->next->val=temp;
+            c=1;
+        }
+        p=p->next;
+        q=q->next;
+    }
+    if (c==1) {
+        BubbleSort(l);
+    }
+}
+
+int main() {
+    List l;
+    Node* p=l.start;
+    int n,m;
+    while (cin>>n) {
+        p->next=new Node();
+        p->next->val=n;
+        p=p->next;
+    }
+    BubbleSort(l);
+    Print(l);
+}
+========================================================================================================
+zadacha 3: da napravime bubble sort i insertion sort za listata shto kje ja vneseme
+    2) InsertionSort
+========================================================================================================
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+};
+
+struct List {
+    Node* start;
+    List() {
+        start = new Node();  
+        start->next = nullptr;
+    }
+};
+
+void Print (List l) {
+    Node* p=l.start;
+    while (p->next) {
+        cout<<p->next->val<<" ";
+        p=p->next;
+    }
+}
+
+void InsertionSort(List l) {
+    if (!l.start->next || !l.start->next->next) return;
+    Node *sortedEnd = l.start->next;
+    Node *p = sortedEnd->next;
+    while (p) {
+        if (p->val >= sortedEnd->val) {
+            sortedEnd = p;
+            p = p->next;
+            continue;
+        }
+        Node *t = p->next;
+        sortedEnd->next = t;
+        Node *q = l.start;
+        while (q->next && q->next->val < p->val) {
+            q = q->next;
+        }
+        p->next = q->next;
+        q->next = p;
+        p = t;
+    }
+}
+
+int main() {
+    List l;
+    Node* p=l.start;
+    int n,m;
+    while (cin>>n) {
+        p->next=new Node();
+        p->next->val=n;
+        p=p->next;
+    }
+    InsertionSort(l);
+    Print(l);
+}
+=============================================================================================================================================================================
+zadacha 4:implementacija na dvojna lista: ADD - stava na kraj po default, ako e specificirana dr poz., togash na taa, REMOVE - se trga cel node (so delete), SEARCH - funkcii
+=============================================================================================================================================================================
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+    Node* prev;
+};
+
+struct List {
+    Node* start;
+    List() {
+        start = new Node();
+        start->next = nullptr;
+        start->prev = nullptr;
+    }
+};
+
+void add (List l, int n) {
+    Node* p=l.start;
+    while (p->next) {
+        p=p->next;
+    }
+    p->next=new Node();
+    p->next->val=n;
+    Node *q=p;
+    p=p->next;
+    p->prev=q;
+    q->next=p;
+    p->next=nullptr;
+}
+
+int find (List l, int n) {
+    Node* p=l.start;
+    while (p->next) {
+        if (p->next->val==n) {
+            break;
+        }
+        p=p->next;
+    }
+    return p->val;
+}
+
+void insert(List &l, int n, int pos) {
+    Node *temp = new Node();
+    temp->val = n;
+    Node *current = l.start;
+    for (int i = 0; i < pos && current != nullptr; i++)
+        current = current->next;
+    if (current == nullptr) return;
+    temp->next = current->next;
+    temp->prev = current;
+    if (current->next != nullptr)
+        current->next->prev = temp;
+    current->next = temp;
+}
+
+void remove (List l, int n) {
+    Node* p=l.start;
+    while (p->next) {
+        if (p->next->val==n) {
+            break;
+        }
+        p=p->next;
+    }
+    Node *q=p;
+    p=p->next;
+    Node *temp=p->next;
+    delete p;
+    q->next=temp;
+    temp->prev=q;
+}
+
+void Print (List l) {
+    Node* p=l.start;
+    while (p->next) {
+        cout<<p->next->val<<" ";
+        p=p->next;
+    }
+}
+
+int main() {
+    List l;
+    Node* p=l.start;
+    int n;
+    while (cin>>n) {
+        add(l,n);
+    }
+    Print (l);
+    cin.clear();
+    cin.ignore(1000, '\n');
+    int pos;
+    cin>>n>>pos;
+    insert (l,n,pos);
+    Print (l);
+    cin.clear();
+    cin.ignore(1000, '\n');
+    cin>>n;
+    cout<<find(l,n);
+    cin.clear();
+    cin.ignore(1000, '\n');
+    cin>>n;
+    remove (l,n);
+    Print (l);
+}
