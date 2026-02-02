@@ -86,46 +86,38 @@ int main()
 Програмата се изврши за: 8.734 s, 8.765 s, 8.734 s, 8.750 s, 8.750 s
 ================================================================================================================================
 
-#include <bits/stdc++.h>
-using namespace std;
-
-void merge_(int a[],int l, int m, int r)
+void merge(int a[], int l, int m, int r)
 {
     int n1 = m - l + 1;
     int n2 = r - m;
     int* L = new int[n1];
     int* R = new int[n2];
-    for (int i = 0; i < n1; i++) {
+    for (int i = 0; i < n1; i++)
         L[i] = a[l + i];
-    }
-    for (int i = 0; i < n2; i++) {
+    for (int i = 0; i < n2; i++)
         R[i] = a[m + 1 + i];
-    }
-    int i = 0, j = 0, k = 1;
+    int i = 0, j = 0, k = l;
     while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
+        if (L[i] <= R[j])
             a[k++] = L[i++];
-        }
-        else {
+        else
             a[k++] = R[j++];
-        }
     }
-    while (i < n1) {
+    while (i < n1)
         a[k++] = L[i++];
-    }
-    while (j < n2) {
+    while (j < n2)
         a[k++] = R[j++];
-    }
     delete[] L;
     delete[] R;
 }
 
 void merge_sort(int a[], int l, int r)
 {
-    if (l<r) {
-        int m = l+(r-1)/2;
+    if (l < r) {
+        int m = l + (r - l) / 2;
         merge_sort(a, l, m);
-        merge_(a,l,m,r);
+        merge_sort(a, m + 1, r);
+        merge(a, l, m, r);
     }
 }
 int main()
@@ -207,4 +199,5 @@ int main()
 ================================================================================================================================
 На компјутер со спецификации: Intel Core i7-10700K @3.80GHz, Ram Memory 32 GB, SSD 224 GB, HDD 1.8 TB, NVIDIA GeForce GTX 1650Ti
 Програмата се изврши за: 0.063 s, 0.062 s, 0.063 s, 0.062 s, 0.063 s
+
 ================================================================================================================================
