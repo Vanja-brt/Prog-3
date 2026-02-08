@@ -1,18 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <utility>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 void inc_coin(int coin, vector<pair<int, int>> &s) {
-    for (auto &p : s) {        // MUST be reference
+    for (auto &p : s) {
         if (p.first == coin) {
             p.second++;
             return;
         }
     }
 }
-
 bool isEqual(vector<pair<int,int>> &a, vector<pair<int,int>> &b) {
     if (a.size() != b.size()) return false;
     for (int i = 0; i < a.size(); i++) {
@@ -23,12 +19,10 @@ bool isEqual(vector<pair<int,int>> &a, vector<pair<int,int>> &b) {
 vector<vector<pair<int, int>>> coins_change(int change, vector<int> &coins)
 {
     vector<vector<pair<int, int>>> sol;
-
     vector<pair<int, int>> zero;
     for (int c : coins) {
         zero.push_back({c, 0});
     }
-
     if (change == 0) {
         sol.push_back(zero);
     } else {
